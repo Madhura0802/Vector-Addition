@@ -25,7 +25,8 @@ int size = N * sizeof(int);
 b = (int*)malloc(size); c = (int*)malloc(size);
 
 // Initialize arrays
-for (int i = 0; i < N; i++) { a[i] = i;
+for (int i = 0; i < N; i++) { 
+a[i] = i;
 b[i] = i * 2;
 }
 
@@ -33,7 +34,8 @@ b[i] = i * 2;
 cudaMalloc(&d_b, size); cudaMalloc(&d_c, size);
 
 // Copy data from host to device
-cudaMemcpy(d_a, a, size, cudaMemcpyHostToDevice); cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice);
+cudaMemcpy(d_a, a, size, cudaMemcpyHostToDevice);
+cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice);
 
 // Launch kernel with 1 million threads
 add<<<(N + 255) / 256, 256>>>(d_a, d_b, d_c);
@@ -44,10 +46,13 @@ cudaMemcpy(c, d_c, size, cudaMemcpyDeviceToHost);
 // Print first and last elements of result
 printf("c[0]=%d, c[%d] = %d",c[0],N-1,c[N-1]);
 
-// Free memory free(a);
+// Free memory
+free(a);
 free(b);
 free(c);
-cudaFree(d_a); cudaFree(d_b); cudaFree(d_c);
+cudaFree(d_a);
+cudaFree(d_b); 
+cudaFree(d_c);
 
 return 0;
 }
@@ -66,4 +71,4 @@ text_file.close()
 !nvprof ./a.out
 
 
-!nvprof ./a.out
+
